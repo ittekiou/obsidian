@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Obsidian リンク中継ページ</title>
+  <script>
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    window.onload = () => {
+      const file = getQueryParam('file');
+      if (!file) {
+        document.body.innerHTML = '<p>パラメータ「file」が指定されていません。</p>';
+        return;
+      }
+
+      // ObsidianのURIを作成（例はvault名が「Documents」）
+      const vaultName = 'Documents';
+      // ファイル名はURLエンコードしてね
+      const encodedFile = encodeURIComponent(file);
+      // 拡張子は必要なら入れて（例：.md）
+      const obsidianUrl = `obsidian://advanced-uri?vault=${vaultName}&filepath=${encodedFile}.md`;
+
+      // ページにリンクを表示して、3秒後に自動で飛ばす
+      document.body.innerHTML = `
+        <p>Obsidianで「${file}」を開きます。</p>
+        <p><a href="${obsidianUrl}">ここをクリックして開く</a></p>
+        <p>3秒後に自動的に移動します...</p>
+      `;
+
+      setTimeout(() => {
+        window.location.href = obsidianUrl;
+      }, 3000);
+    };
+  </script>
+</head>
+<body>
+</body>
+</html>
