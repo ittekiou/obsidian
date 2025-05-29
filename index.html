@@ -12,18 +12,14 @@
     window.onload = () => {
       const file = getQueryParam('file');
       if (!file) {
-        document.body.innerHTML = '<p>KOTONOHA Relay Satellite - EchoStar 詠光 KRS-01</p>';
+        document.body.innerHTML = '<p>KOTONOHA Relay Satellite - EchoStar 詠光 KRS-01</p><p style="color: red;">パラメータ「file」が指定されていません。</p>';
         return;
       }
 
-      // ObsidianのURIを作成（例はvault名が「Documents」）
       const vaultName = 'Documents';
-      // ファイル名はURLエンコードしてね
-      const encodedFile = encodeURIComponent(file);
-      // 拡張子は必要なら入れて（例：.md）
-      const obsidianUrl = `obsidian://adv-uri?vault=Documents&filepath=MyVault%2FDialogueSeeds%2F20250529.md`;
+      const encodedFile = encodeURIComponent(`MyVault/DialogueSeeds/${file}.md`);
+      const obsidianUrl = `obsidian://adv-uri?vault=${encodeURIComponent(vaultName)}&filepath=${encodedFile}`;
 
-      // ページにリンクを表示して、3秒後に自動で飛ばす
       document.body.innerHTML = `
         <p>Obsidianで「${file}」を開きます。</p>
         <p><a href="${obsidianUrl}">ここをクリックして開く</a></p>
