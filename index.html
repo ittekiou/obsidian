@@ -16,9 +16,9 @@
         return;
       }
 
-      const vaultName = 'Documents';
-      // filepathはvault直下のDialogueSeedsフォルダ内のファイルと仮定
-      const obsidianUrl = `obsidian://adv-uri?vault=${vaultName}&filepath=DialogueSeeds%2F${encodeURIComponent(file)}.md`;
+      const vaultName = 'MyVault'; // ← Vault名をここに（正確に）
+      const encodedFile = encodeURIComponent(`DialogueSeeds/${file}.md`);
+      const obsidianUrl = `obsidian://adv-uri?vault=${encodeURIComponent(vaultName)}&filepath=${encodedFile}`;
 
       document.body.innerHTML = `
         <p>Obsidianで「${file}」を開きます。</p>
