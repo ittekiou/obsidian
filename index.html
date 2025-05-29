@@ -12,13 +12,17 @@
     window.onload = () => {
       const file = getQueryParam('file');
       if (!file) {
-        document.body.innerHTML = '<p>KOTONOHA Relay Satellite - EchoStar 詠光 KRS-01</p><p style="color: red;">パラメータ「file」が指定されていません。</p>';
+        document.body.innerHTML = '<p>KOTONOHA Relay Satellite - EchoStar 詠光 KRS-01</p>';
         return;
       }
 
       const vaultName = 'Documents';
-      const encodedFile = encodeURIComponent(`MyVault/DialogueSeeds/${file}.md`);
-      const obsidianUrl = `obsidian://adv-uri?vault=${encodeURIComponent(vaultName)}&filepath=${encodedFile}`;
+      // ファイル名はURLエンコード
+      const encodedFile = encodeURIComponent(file) + '.md';
+      // filepathは「DialogueSeeds/ファイル名.md」を指定（URLエンコード済み）
+      const filepath = `DialogueSeeds%2F${encodedFile}`;
+
+      const obsidianUrl = `obsidian://adv-uri?vault=${encodeURIComponent(vaultName)}&filepath=${filepath}`;
 
       document.body.innerHTML = `
         <p>Obsidianで「${file}」を開きます。</p>
