@@ -21,7 +21,7 @@
       // ファイル名はURLエンコードしてね
       const encodedFile = encodeURIComponent(file);
       // 拡張子は必要なら入れて（例：.md）
-      const obsidianUrl = `obsidian://advanced-uri?vault=${vaultName}&filepath=${encodedFile}.md`;
+      const obsidianUrl = `obsidian://adv-uri?vault=Documents&filepath=MyVault%2FDialogueSeeds%2F20250529.md`;
 
       // ページにリンクを表示して、3秒後に自動で飛ばす
       document.body.innerHTML = `
