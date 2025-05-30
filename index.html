@@ -1,26 +1,41 @@
-<script>
-  function getQueryParam(param) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(param);
-  }
-
-  window.onload = () => {
-    const path = getQueryParam('path'); // 例: DialogueSeeds/2025/05/20250530
-    if (!path) {
-      document.body.innerHTML = '<p>衛星 EchoStar 起動完了</p>';
-      return;
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>EchoStar 詠光 KRS-01</title>
+  <script>
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
     }
 
-    const vaultName = 'MyVault'; // ← スマホでのVault名と完全一致に修正！
-    const obsidianUrl = `obsidian://open?vault=${encodeURIComponent(vaultName)}&file=${encodeURIComponent(path)}`;
+    function isMobileDevice() {
+      return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    }
 
-    document.body.innerHTML = `
-      <p>「${path}」をObsidianで開きます。</p>
-      <p><a href="${obsidianUrl}">ここをクリック</a></p>
-      <p>3秒後に自動的に移動します...</p>
-    `;
-    setTimeout(() => {
-      window.location.href = obsidianUrl;
-    }, 3000);
-  };
-</script>
+    window.onload = () => {
+      const path = getQueryParam('path');
+      if (!path) {
+        document.body.innerHTML = '<p>KOTONOHA Relay Satellite - EchoStar 詠光 KRS-01</p>';
+        return;
+      }
+
+      const vaultName = isMobileDevice() ? 'MyVault' : 'Documents';
+      const encodedPath = encodeURIComponent(`${path}.md`);
+      const obsidianUrl = `obsidian://adv-uri?vault=${encodeURIComponent(vaultName)}&filepath=${encodedPath}`;
+
+      document.body.innerHTML = `
+        <p>Obsidianで「${path}」を開きます。</p>
+        <p><a href="${obsidianUrl}">ここをクリックして開く</a></p>
+        <p>3秒後に自動的に移動します...</p>
+      `;
+
+      setTimeout(() => {
+        window.location.href = obsidianUrl;
+      }, 3000);
+    };
+  </script>
+</head>
+<body>
+</body>
+</html>
