@@ -9,6 +9,10 @@
       return urlParams.get(param);
     }
 
+    function isMobileDevice() {
+      return /iPhone|iPad|Android/i.test(navigator.userAgent);
+    }
+
     window.onload = () => {
       const path = getQueryParam('path');
       if (!path) {
@@ -16,14 +20,22 @@
         return;
       }
 
-      const vaultName = 'MyVault'; // スマホ側のVault名に合わせて！
-      const encodedPath = encodeURIComponent(path);
-      const obsidianUrl = `obsidian://open?vault=${encodeURIComponent(vaultName)}&file=${encodedPath}`;
+      const isMobile = isMobileDevice();
+
+      // Vault名を切り替え
+      const vaultName = isMobile ? 'MyVault' : 'Documents';
+      const encodedPath = encodeURIComponent(`${path}.md`);
+
+      // Obsidian URLを構築（PC: adv-uri, スマホ: file）
+      const obsidianUrl = isMobile
+        ? `obsidian://open?vault=${encodeURIComponent(vaultName)}&file=${encodedPath}`
+        : `obsidian://adv-uri?vault=${encodeURIComponent(vaultName)}&filepath=${encodedPath}`;
 
       document.body.innerHTML = `
         <p>Obsidianで「${path}」を開きます。</p>
         <p><a href="${obsidianUrl}">ここをクリックして開く</a></p>
         <p>3秒後に自動的に移動します...</p>
+        <p>（Vault名: ${vaultName}, モード: ${isMobile ? 'file' : 'adv-uri'}）</p>
       `;
 
       setTimeout(() => {
