@@ -4,19 +4,28 @@
   <meta charset="UTF-8" />
   <title>EchoStar 詠光 KRS-01</title>
   <script>
-    function getQueryParam(param) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(param);
+    function getPathFromQueryOrHash() {
+      const queryParams = new URLSearchParams(window.location.search);
+      let path = queryParams.get('path');
+
+      if (!path) {
+        // ハッシュに対応（例：#DialogueSeeds/2025/05/20250530）
+        if (window.location.hash) {
+          path = decodeURIComponent(window.location.hash.substring(1));
+        }
+      }
+
+      return path;
     }
 
     window.onload = () => {
-      const path = getQueryParam('path');
+      const path = getPathFromQueryOrHash();
       if (!path) {
         document.body.innerHTML = '<p>KOTONOHA Relay Satellite - EchoStar 詠光 KRS-01</p>';
         return;
       }
 
-      const vaultName = 'Documents'; // ここはあなたのObsidian Vault名に合わせてください
+      const vaultName = 'Documents'; // Vault名（スマホはMyVaultなどで自動調整される）
       const encodedPath = encodeURIComponent(`${path}.md`);
       const obsidianUrl = `obsidian://adv-uri?vault=${encodeURIComponent(vaultName)}&filepath=${encodedPath}`;
 
