@@ -10,18 +10,18 @@
     }
 
     window.onload = () => {
-      const file = getQueryParam('file');
-      if (!file) {
+      const path = getQueryParam('path');
+      if (!path) {
         document.body.innerHTML = '<p>KOTONOHA Relay Satellite - EchoStar 詠光 KRS-01</p>';
         return;
       }
 
-      const vaultName = 'Documents'; // ← Vault名をここに（正確に）
-      const encodedFile = encodeURIComponent(`DialogueSeeds/${file}.md`);
+      const vaultName = 'Documents'; // ← あなたのVault名
+      const encodedFile = encodeURIComponent(`DialogueSeeds/${path}.md`);
       const obsidianUrl = `obsidian://adv-uri?vault=${encodeURIComponent(vaultName)}&filepath=${encodedFile}`;
 
       document.body.innerHTML = `
-        <p>Obsidianで「${file}」を開きます。</p>
+        <p>Obsidianで「${path}」を開きます。</p>
         <p><a href="${obsidianUrl}">ここをクリックして開く</a></p>
         <p>3秒後に自動的に移動します...</p>
       `;
