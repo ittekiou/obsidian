@@ -9,8 +9,8 @@
       return urlParams.get(param);
     }
 
-    function isMobileDevice() {
-      return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    function isMobile() {
+      return /iPhone|iPad|Android/.test(navigator.userAgent);
     }
 
     window.onload = () => {
@@ -20,9 +20,17 @@
         return;
       }
 
-      const vaultName = isMobileDevice() ? 'MyVault' : 'Documents';
       const encodedPath = encodeURIComponent(`${path}.md`);
-      const obsidianUrl = `obsidian://adv-uri?vault=${encodeURIComponent(vaultName)}&filepath=${encodedPath}`;
+
+      let obsidianUrl;
+      if (isMobile()) {
+        // モバイルでは vault 無指定、open 形式
+        obsidianUrl = `obsidian://open?path=${encodedPath}`;
+      } else {
+        // PCでは vault=Documents を明示
+        const vaultName = 'Documents';
+        obsidianUrl = `obsidian://adv-uri?vault=${encodeURIComponent(vaultName)}&filepath=${encodedPath}`;
+      }
 
       document.body.innerHTML = `
         <p>Obsidianで「${path}」を開きます。</p>
